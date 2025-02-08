@@ -10,11 +10,8 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 
-def test_work_with_window():
-    options = Options()
-    options.add_argument("--start-maximized")
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options)
+
+def test_work_with_window(driver):
 
     driver.get("https://demoqa.com/browser-windows")
     main_window = driver.current_window_handle
@@ -27,11 +24,7 @@ def test_work_with_window():
     driver.switch_to.window(main_window)
 
 
-def test_work_with_iframe():
-    options = Options()
-    options.add_argument("--start-maximized")
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options)
+def test_work_with_iframe(driver):
 
     driver.get("https://demoqa.com/frames")
     driver.switch_to.frame("frame1")
@@ -45,11 +38,7 @@ def test_work_with_iframe():
 
     driver.quit()
 
-def test_work_with_alert():
-    options = Options()
-    options.add_argument("--start-maximized")
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options)
+def test_work_with_alert(driver):
 
     driver.get("https://demoqa.com/alerts")
     driver.find_element(By.CSS_SELECTOR, "[id=alertButton]").click()
@@ -73,23 +62,17 @@ def test_work_with_alert():
 
     driver.quit()
 
-def test_work_with_capabilities():
-    options = Options()
-    options.add_argument("--start-maximized")
-    options.add_argument("--lang=ru-RU")
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options)
+def test_work_with_capabilities(driver):
+
 
     driver.get("https://www.google.com")
+    text5 = driver.find_element(By.ID, "SIvCob")
+    assert text5.text == "Сервисы Google доступны на этих языках: Беларуская"
     print("Открыта страница с русским интерфейсом.")
-    driver.quit()
 
 
-def test_with_actions():
-    options = Options()
-    options.add_argument("--start-maximized")
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options)
+
+def test_with_actions(driver):
 
     driver.get("https://jqueryui.com/droppable")
     frame = driver.find_element(By.CLASS_NAME, "demo-frame")
@@ -100,8 +83,8 @@ def test_with_actions():
     actions = ActionChains(driver)
     actions.drag_and_drop(element_for_move, element2).perform()
 
-    if "Dropped" in element2.text:
-        print("Перетаскивание выполнено успешно!")
+    assert "Dropped!" in element2.text
+    print("Перетаскивание выполнено успешно!")
 
     driver.quit()
 
